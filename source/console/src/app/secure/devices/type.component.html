@@ -184,7 +184,7 @@
                                                     <small>The maximum value of the random integer generated.</small>
                                                 </div>
                                             </div>
-                                            <div *ngIf="attribute.type === 'shortid' || attribute.type === 'string' || attribute.type === 'uuid'" class="form-group">
+                                            <div *ngIf="attribute.type === 'shortid' || attribute.type === 'string' || attribute.type === 'uuid' || attribute.type === 'pickOne'" class="form-group">
                                                 <label for="static" class="form-control-label">Static:</label>
                                                 <select class="custom-select col-12" name="static" id="static" #static="ngModel" [(ngModel)]="attribute.static" required ngModel>
                                                     <option value="true">true</option>

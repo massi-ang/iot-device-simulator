@@ -107,11 +107,19 @@ class Widget extends Device {
                         }
                     }
                 }
-
+                const varRegex = /\$\{(\w+)\}/g // matches ${name}
+                const attributesToRemove = {}
+                var _topic = this.messageSpec.topic.replace(varRegex, function(match, p, offset, s) {
+                    attributesToRemove[p] = 0;
+                    return _message[p];
+                } );
+                for (var v in attributesToRemove) {
+                    delete _message[v];
+                }
                 _message._id_ = this.id;
                 let _payload = JSON.stringify(_message);
                 this.options.logger.debug(`Sending data for '${this.id}' (${this.userId}) to AWS IoT ${_payload} to ${this.messageSpec.topic}`, this.options.logger.levels.DEBUG);
-                this._publishMessage(this.messageSpec.topic, _payload).then((result) => {
+                this._publishMessage(_topic, _payload).then((result) => {
                     this.options.logger.debug(`Message successfully sent for '${this.id}' to configured topic.`, this.options.logger.levels.DEBUG);
                 }).catch((err) => {
                     this.options.logger.error(err, this.options.logger.levels.ROBUST);
@@ -168,6 +176,9 @@ class Widget extends Device {
                     break;
                 case 'pickOne':
                     _value = this.generator.pickOne(attribute.arr);
+                    if (attribute.hasOwnProperty('static')) {
+                        this.info[attribute.name] = _value;
+                    }
                     break;
                 case 'uuid':
                     _value = this.generator.uuid();
