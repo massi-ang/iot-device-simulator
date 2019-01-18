@@ -118,7 +118,7 @@ class Widget extends Device {
                 }
                 _message._id_ = this.id;
                 let _payload = JSON.stringify(_message);
-                this.options.logger.debug(`Sending data for '${this.id}' (${this.userId}) to AWS IoT ${_payload} to ${this.messageSpec.topic}`, this.options.logger.levels.DEBUG);
+                this.options.logger.debug(`Sending data for '${this.id}' (${this.userId}) to AWS IoT ${_payload} to ${_topic}`, this.options.logger.levels.DEBUG);
                 this._publishMessage(_topic, _payload).then((result) => {
                     this.options.logger.debug(`Message successfully sent for '${this.id}' to configured topic.`, this.options.logger.levels.DEBUG);
                 }).catch((err) => {
