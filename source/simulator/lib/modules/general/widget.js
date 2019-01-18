@@ -110,8 +110,12 @@ class Widget extends Device {
                 const varRegex = /\$\{(\w+)\}/g // matches ${name}
                 const attributesToRemove = {}
                 var _topic = this.messageSpec.topic.replace(varRegex, function(match, p, offset, s) {
-                    attributesToRemove[p] = 0;
-                    return _message[p];
+                    if (_message.hasOwnProperty(p)) {
+                        attributesToRemove[p] = 0;
+                        return _message[p];
+                    } else {
+                        return match;
+                    }
                 } );
                 for (var v in attributesToRemove) {
                     delete _message[v];
